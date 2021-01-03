@@ -34,3 +34,21 @@ jobs:
       -
         name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Get latest code
+        run: git clone https://github.com/DNSCrypt/dnscrypt-server-docker.git
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./dnscrypt-server-docker
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+          push: true
+          tags: tangcuyu/dnscrypt-server:latest
