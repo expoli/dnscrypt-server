@@ -42,13 +42,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Get latest code
-        run: git clone https://github.com/DNSCrypt/dnscrypt-server-docker.git
+        run: git clone https://github.com/DNSCrypt/dnscrypt-server-docker.git && mv dnscrypt-server-docker/* .
       -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./dnscrypt-server-docker/Dockerfile
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64/v8,linux/ppc64le,linux/s390x,linux/arm/v7
           push: true
           tags: tangcuyu/dnscrypt-server:latest
